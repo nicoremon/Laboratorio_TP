@@ -1,17 +1,37 @@
+# Importo libreria choice para seleccion un elemento al azar del array de palabras
+from random import choice
 # Juego Ahorcado
+
 # Variables
+palabras = ['juego', 'ahorcado', 'utn', 'programacion', 'villamaria', "cordoba"]
 intentos = 6
-#letra = ""
-# Set de palabras secretas
-palabras = {'juego', 'ahorcado', 'facultad', 'programacion'}
-# Sorteo para obtener palabra para jugar
-palabra_secreta = palabras.pop()
-# Lista de letras erroneas introducidas por Jugador
+aciertos = 0
+juego_terminado = False
+letras_correctas = []
 letras_erroneas = []
-# Funcion para solicitar letra a adivinar.
-#def letra_consulta(Letra):
-#    letra = input("Ingrese letra a adivinar: ")
-#    return letra
+palabra_elegida = elegir_palabra(palabras)
+
+# Sorteo para obtener palabra para jugar
+def elegir_palabra(lista_palabras):
+    palabra_elegida = choice(lista_palabras)
+    letras_unicas = len(set(palabra_elegida))
+
+    return palabra_elegida, letras_unicas
+
+# Funcion para solicitar letra y corroborar que sea correcta
+def pedir_letra():
+    letra_elegida = ''
+    es_valida = False
+    abecedario = 'abcdefghijklmnñopqrstuvwxyz'
+
+    while not es_valida:
+        letra_elegida = input("Elige una letra: ")
+        if letra_elegida in abecedario and len(letra_elegida) == 1:
+            es_valida = True
+        else:
+            print("No has elegido una letra correcta")
+
+    return letra_elegida
 
 # Inicio Juego Ahorcado
 print("--------------------------------")
@@ -22,30 +42,28 @@ print("--------------------------------")
 
 # Informar Longitud de palabra secreta
 # Mostrar por pantalla la cantidad de _ segun la longitud de la palabra
-len_palabra_secreta = len(palabra_secreta)
-print(f"La longitud de la palabra secreta es de {len_palabra_secreta} caracteres")
-print("_ "*len_palabra_secreta)
-guiones_ = "_ " * len_palabra_secreta
+len_palabra_elegida = len(palabra_elegida)
+print(f"La longitud de la palabra secreta es de {len_palabra_elegida} caracteres")
+print("_ "*len_palabra_elegida)
+guiones_ = "_ " * len_palabra_elegida
 
-# Armando la palabra con replace en los _ por las letras adivinidas en su posicion
-palabra = guiones_
 
-# El juego funciona mientras el usuario cuente con intentos disponibles (partes del ahorcado = 6)
-while intentos > 0:
+# El juego funciona mientras el usuario no pierda
+while juego_terminado == False:
         
     # Solicitar a usuario letra a adivinar..
     #letra_consulta(letra)
-    letra = input("Ingrese letra a adivinar: ")
+    letra = pedir_letra()
 
     # Comprobar si la letra se encuentra dentro de la palabra secreta
-    if letra in palabra_secreta:
-        posicion = palabra_secreta.find(letra)
+    if letra in palabra_elegida:
+        posicion = palabra_elegida.find(letra)
         #fragmento = palabra_secreta[posicion]
         #palabra = palabra.replace(fragmento in posicion)
         print(f"La letra se encuentra dentro de la palabra secreta en la posicion {posicion}")
         #print(fragmento) # Para hacer esto tengo que corroborar donde se encuentra y si se repite
         
-    # a este le tengo que poner un condicional que imprima x dibujo dependiendo de como esta el contador de intentos    
+    # Ver de convertir esto en funciones y que valla llamando segun cantidad de vidas restantes    
     else:
         intentos -= 1
         if intentos == 5:
@@ -135,18 +153,21 @@ while intentos > 0:
             ''')
             
             letras_erroneas.append(letra)
-            print("La letra ingresada no se encuentra en la palabra")
+            print("La letra ingresada no se encuentra en la palabra. Usted Perdio")
             print(f"Letras erroneas ingresadas: {letras_erroneas}, le quedan {intentos} intentos restantes")
+            juego_terminado = True
             
-            # Volver a jugar ? Resolver esto
-            fin = input("Usted perdio el Juego :( Quiere jugar de nuevo? s/n: ")
-                        
-            if fin == s:
-                intentos = 6
-                continue
-            else:
-                print("Gracias por jugar")
-                break
+    # Volver a jugar ? Resolver esto
+    fin = input("Usted perdio el Juego :( Quiere jugar de nuevo? s/n: ")
+                       
+    if fin == "s":
+        intentos = 6
+        juego_terminado = False
+        continue
+    else:
+        print("Gracias por jugar")
+        juego_terminado = True
+        break
 
 
             
