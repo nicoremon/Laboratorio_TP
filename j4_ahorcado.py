@@ -139,20 +139,6 @@ def ganar(palabra_descubierta):
 
     return True
 
-############################### Volver a jugar ? Resolver esto ####################################
-def fin(terminado):    
-    if terminado == True:
-        jugar_de_nuevo = input("Quiere jugar de nuevo? s/n: ")
-                        
-        if jugar_de_nuevo == "s":
-            elegir_palabra(palabras)
-            vidas = 6
-            return False, vidas, elegir_palabra
-        else:
-            print("Gracias por jugar")
-            return True
-############################### Volver a jugar ? Resolver esto ####################################
-
 palabra, letras_unicas = elegir_palabra(palabras)
 
 # Juego
@@ -179,9 +165,10 @@ while not juego_terminado:
         letra = pedir_letra()
 
     intentos, terminado, aciertos = chequear_letra(letra,palabra,intentos,aciertos)
-    #juego_terminado = terminado
+    
+    juego_terminado = terminado
 
-    juego_terminado = fin(terminado)
+   
 
 
 
